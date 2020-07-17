@@ -1,0 +1,19 @@
+body {
+    margin: 0px;
+    padding: 0px;
+    background: #F3F7FA;
+    color: #4A4A4A;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 21px;
+}
+
+.app {
+    padding-top: 60px; 
+    max-width: 755px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}

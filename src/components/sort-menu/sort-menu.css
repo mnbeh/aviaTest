@@ -1,0 +1,28 @@
+.sort-menu {
+    max-width: 503px;
+    background: #FFF;
+    margin-bottom: 20px;
+    border: 1px solid #DFE5EC;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    letter-spacing: 0.5px;
+    font-size: 12px;
+    text-transform: uppercase; 
+}
+
+.cheap {
+    padding: 15px 66px;
+    cursor: pointer;
+}
+
+.fast {
+    padding: 15px 66px;
+    cursor: pointer;
+}
+
+.activeSort {
+    color: #FFFFFF;
+    background: #2196F3;
+    border-radius: 5px;
+}

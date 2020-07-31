@@ -11,12 +11,7 @@
     text-transform: uppercase; 
 }
 
-.cheap {
-    padding: 15px 66px;
-    cursor: pointer;
-}
-
-.fast {
+.sort {
     padding: 15px 66px;
     cursor: pointer;
 }

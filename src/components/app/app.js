@@ -11,105 +11,95 @@ export default class App extends Component {
     tickets: [],
     error: false,
     loading: true,
-    cheapSort: '',
-    fastSort: '',
-    filterAll: true,
-    filterZero: false,
-    filterOne: false,
-    filterTwo: false,
-    filterThree: false
+    sortName: 'cheap',
+    filterall: true,
+    filterzero: false,
+    filterone: false,
+    filtertwo: false,
+    filterthree: false,
   };
 
   api = new AviaApi();
 
-  priceSort = () => {
-    this.setState(({tickets}) => {
-      const newArray = tickets.slice();
-      const sortedArr = newArray.sort((a,b) => a.price-b.price);
-      return {
-        tickets: sortedArr,
-        cheapSort: 'activeSort',
-        fastSort: '',
-      }
-    });
-  };
 
-  speedSort = () => {
-    this.setState(({tickets}) => {
-      const newArray = tickets.slice();
-      const sortedArr = newArray.sort((a,b) => a.segments[0].duration-b.segments[0].duration);
-      return {
-        tickets: sortedArr,
-        cheapSort: '',
-        fastSort: 'activeSort',
-      }
-    })
-  }
-
-  filterClick = (title) => {
+  onFilter = (filterName) => {
     this.setState((state) => {
-      const newFilter = !state[`filter${title}`]
-      if ((state.filterAll === true) && (title !== 'All')) {
+      const newFilter = !state[`filter${filterName}`]
+      if ((state.filterall === true) && (filterName !== 'all')) {
         return {
-          [`filter${title}`]: newFilter,
-          filterAll: false
+          [`filter${filterName}`]: newFilter,
+          filterall: false
         }
       }
-      if ((title === 'All')) {
+      if ((filterName === 'all')) {
         return {
-          [`filter${title}`]: newFilter,
-          filterZero: false,
-          filterOne: false,
-          filterTwo: false,
-          filterThree: false
+          [`filter${filterName}`]: newFilter,
+          filterzero: false,
+          filterone: false,
+          filtertwo: false,
+          filterthree: false
         }
       }
       return {
-        [`filter${title}`]: newFilter
+        [`filter${filterName}`]: newFilter
       }
     });
   }
 
-  onFilter = (tickets) => {
-    let filterZero = [];
-    let filterOne = [];
-    let filterTwo = [];
-    let filterThree = [];
-    if (this.state.filterAll === true) {
-      return tickets;
+  filterTickets = (arr) => {
+    let zeroArr = [];
+    let oneArr = [];
+    let twoArr = [];
+    let threeArr = [];
+    if (this.state.filterall) {
+      return arr;
     }
-    if (this.state.filterZero === true) {
-      filterZero = tickets.filter((item) => item.segments[0].stops.length === 0);
-    }
-    if (this.state.filterOne === true) {
-      filterOne = tickets.filter((item) => item.segments[0].stops.length === 1);
-    }
-    if (this.state.filterTwo === true) {
-      filterTwo = tickets.filter((item) => item.segments[0].stops.length === 2);
-    }
-    if (this.state.filterThree === true) {
-      filterThree = tickets.filter((item) => item.segments[0].stops.length === 3);
-    }
-    return [...filterZero, ...filterOne, ...filterTwo, ...filterThree];
+    if (this.state.filterzero) {
+      zeroArr = arr.filter((item) => item.segments[0].stops.length === 0)
+    };
+    if (this.state.filterone) {
+      oneArr = arr.filter((item) => item.segments[0].stops.length === 1)
+    };
+    if (this.state.filtertwo) {
+      twoArr = arr.filter((item) => item.segments[0].stops.length === 2)
+    };
+    if (this.state.filterthree) {
+      threeArr = arr.filter((item) => item.segments[0].stops.length === 3)
+    };
+
+    return [...zeroArr, ...oneArr, ...twoArr, ...threeArr];
   }
 
+  onSort = (sortName) => {
+    this.setState({sortName});
+  }
+
+  sortItems = (items) => {
+    return this.state.sortName === 'cheap' ? items.sort((a,b) => a.price-b.price) 
+                                            : items.sort((a,b) => a.segments[0].duration-b.segments[0].duration)
+  };
 
   componentDidMount() {
     this.api.getTickets().then((tickets) => this.setState({tickets, loading: false})).catch(() => this.setState({error: true, loading: false}))
   };
 
   render() {
-    const { cheapSort, fastSort, tickets, error, loading} = this.state;
-    const visibleItems = this.onFilter(tickets);
+    const { tickets, error, loading, filterall,filterzero, filterone, filtertwo, filterthree, sortName} = this.state;
+    const visibleItems = this.sortItems(this.filterTickets(tickets));
     const hasData = !(loading || error);
-    const errorMessage = error ? <div>Пожалуйста, перезагрузите страницу</div> : null;
+    const errorMessage = error ? <div>Ошибка в JSON! Пожалуйста, перезагрузите страницу</div> : null;
     const loadingMessage = loading ? <div>Пожалуйста, ожидайте</div> : null;
     const ticketsView = hasData ? <Tickets tickets={visibleItems} /> : null;
     return (
     <div className="app">
-      <FilterMenu filterClick={this.filterClick} />
+      <FilterMenu onFilter={this.onFilter}
+       all={filterall}
+       zero={filterzero}
+       one={filterone}
+       two={filtertwo}
+       three={filterthree} />
       <div>   
-        <SortMenu onPriceSort={this.priceSort} onSpeedSort={this.speedSort} cheapSort={cheapSort} fastSort={fastSort} />
+        <SortMenu sortName={sortName} onSort={this.onSort} />
         {errorMessage}
         {loadingMessage}
         {ticketsView}
@@ -118,3 +108,31 @@ export default class App extends Component {
   );
   };
 };
+
+
+
+
+
+  // priceSort = () => {
+  //   this.setState(({tickets}) => {
+  //     const newArray = tickets.slice();
+  //     const sortedArr = newArray.sort((a,b) => a.price-b.price);
+  //     return {
+  //       tickets: sortedArr,
+  //       cheapSort: 'activeSort',
+  //       fastSort: '',
+  //     }
+  //   });
+  // };
+
+  // speedSort = () => {
+  //   this.setState(({tickets}) => {
+  //     const newArray = tickets.slice();
+  //     const sortedArr = newArray.sort((a,b) => a.segments[0].duration-b.segments[0].duration);
+  //     return {
+  //       tickets: sortedArr,
+  //       cheapSort: '',
+  //       fastSort: 'activeSort',
+  //     }
+  //   })
+  // }

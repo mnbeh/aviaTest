@@ -1,26 +1,40 @@
-import React, {Component} from 'react';
+import React from 'react';
 import './filter-menu.css';
 
-export default class FilterMenu extends Component {
+const FilterMenu = (props) => {
+  const checkbox = [
+    { name: "all", label: 'Все', id: 1},
+    { name: "zero", label: 'Без пересадок', id: 2},
+    { name: "one", label: '1 пересадка', id: 3},
+    { name: "two", label: '2 пересадки', id: 4},
+    { name: "three", label: '3 пересадки', id: 5},
+  ];
 
-  state = {
-    filters: [
-      {name: 'Все', title: 'All', id:1 },
-      {name: 'Без пересадок', title: 'Zero', id:2 },
-      {name: '1 пересадка', title: 'One', id:3 },
-      {name: '2 пересадки', title: 'Two', id:4 },
-      {name: '3 пересадки', title: 'Three', id:5 },
-    ],
-  }
+  const onChange = (name) => {
+    props.onFilter(name);
+  };
 
-  render() {
-    return (
+  return (
     <div className="filter-menu">
       <div className="header">Количество пересадок</div>
-      {this.state.filters.map(({name, title, id}) => {
-       return  <div className="checkbox-item" key={id}><label><input type="checkbox" onClick={() => this.props.filterClick(title)} />{name}</label></div> 
-      } )}
+        {checkbox.map(({name, id, label}) => {
+
+        return (
+          <div className="checkbox-item" key={id}>
+          <label>
+           <input
+            onChange={() => onChange(name)}
+            name={name}
+            type="checkbox"
+            checked={props[name]}
+           />
+           {label}
+           </label>
+           </div>
+         );
+        })}
       </div>
   );
-  };
 };
+
+export default FilterMenu;

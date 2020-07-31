@@ -9,8 +9,6 @@ export default class AviaApi {
     const id = await this.getSearchId();
     const res = await fetch(`https://front-test.beta.aviasales.ru/tickets?searchId=${id}`);
     const body = await res.json();
-    return body.tickets;
+    return body.tickets.slice(0, 5);
   }
-
-  
 }

@@ -26,27 +26,28 @@ export default class TicketItem extends Component {
   };
 
   render() {
-    const { price, carrier, segments: [{origin, destination, date, stops, duration}, {origin: origin2, destination: destination2, date: date2, stops: stops2, duration: duration2}]} = this.props.tickets;
-    const departureTime = this.getHourMin(date);
-    const departureTime2 = this.getHourMin(date2);
-    const stopsStr = stops.join(', ');
-    const stopsStr2 = stops2.join(', ');
-    const timeHours = this.getDurationHours(duration);
-    const timeMinutes = this.getDurationMinutes(duration);
-    const timeHours2 = this.getDurationHours(duration2);
-    const timeMinutes2 = this.getDurationMinutes(duration2);
-    const arrivedTime = this.countHourMin(date,timeHours,timeMinutes);
-    const arrivedTime2 = this.countHourMin(date,timeHours2,timeMinutes2);
-    const src = `//pics.avs.io/99/36/${carrier}.png`;
+    const { price, img, dateDepart, destinationDepart, 
+      durationDepart, originDepart, stopsDepart, dateReturn,
+      destinationReturn, durationReturn, originReturn, stopsReturn } = this.props.ticket;
+    const departureTime = this.getHourMin(dateDepart);
+    const departureTime2 = this.getHourMin(dateReturn);
+    const stopsStr = stopsDepart.join(', ');
+    const stopsStr2 = stopsReturn.join(', ');
+    const timeHours = this.getDurationHours(durationDepart);
+    const timeMinutes = this.getDurationMinutes(durationDepart);
+    const timeHours2 = this.getDurationHours(durationReturn);
+    const timeMinutes2 = this.getDurationMinutes(durationReturn);
+    const arrivedTime = this.countHourMin(dateDepart,timeHours,timeMinutes);
+    const arrivedTime2 = this.countHourMin(dateReturn,timeHours2,timeMinutes2);
     return (
     <div className="ticket-item">
       <div className="flex">
       <div className="price">{`${price.toLocaleString()} P`}</div>
-      <img src={src} alt="company"/>
+      <img src={img} alt="company"/>
       </div>
       <div className="flightInfo">
         <div className="flight-info-block">
-          <div className="info">{`${origin} - ${destination}`}</div>
+          <div className="info">{`${originDepart} - ${destinationDepart}`}</div>
           <div className="data">{`${departureTime} - ${arrivedTime}`}</div>
         </div>
         <div className="flight-info-block">
@@ -54,11 +55,11 @@ export default class TicketItem extends Component {
           <div className="data">{`${timeHours}ч ${timeMinutes}м`}</div>
           </div>
         <div className="flight-info-block">
-          <div className="info">{`${stops.length} пересадки`}</div>
+          <div className="info">{`${stopsDepart.length} пересадки`}</div>
           <div className="data">{stopsStr}</div>
           </div>
         <div className="flight-info-block">
-          <div className="info">{`${origin2} - ${destination2}`}</div>
+          <div className="info">{`${originReturn} - ${destinationReturn}`}</div>
           <div className="data">{`${departureTime2} - ${arrivedTime2}`}</div>
         </div>
         <div className="flight-info-block">
@@ -66,7 +67,7 @@ export default class TicketItem extends Component {
           <div className="data">{`${timeHours2}ч ${timeMinutes2}м`}</div>
         </div>
         <div className="flight-info-block">
-          <div className="info">{`${stops2.length} пересадки`}</div>
+          <div className="info">{`${stopsReturn.length} пересадки`}</div>
           <div className="data">{stopsStr2}</div>
         </div>
       </div>

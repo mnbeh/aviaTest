@@ -55,16 +55,16 @@ export default class App extends Component {
       return arr;
     }
     if (this.state.filterzero) {
-      zeroArr = arr.filter((item) => item.segments[0].stops.length === 0)
+      zeroArr = arr.filter((item) => item.stopsDepart.length === 0)
     };
     if (this.state.filterone) {
-      oneArr = arr.filter((item) => item.segments[0].stops.length === 1)
+      oneArr = arr.filter((item) => item.stopsDepart.length === 1)
     };
     if (this.state.filtertwo) {
-      twoArr = arr.filter((item) => item.segments[0].stops.length === 2)
+      twoArr = arr.filter((item) => item.stopsDepart.length === 2)
     };
     if (this.state.filterthree) {
-      threeArr = arr.filter((item) => item.segments[0].stops.length === 3)
+      threeArr = arr.filter((item) => item.stopsDepart.length === 3)
     };
 
     return [...zeroArr, ...oneArr, ...twoArr, ...threeArr];
@@ -76,7 +76,7 @@ export default class App extends Component {
 
   sortItems = (items) => {
     return this.state.sortName === 'cheap' ? items.sort((a,b) => a.price-b.price) 
-                                            : items.sort((a,b) => a.segments[0].duration-b.segments[0].duration)
+                                            : items.sort((a,b) => a.durationDepart-b.durationDepart)
   };
 
   componentDidMount() {
@@ -108,31 +108,3 @@ export default class App extends Component {
   );
   };
 };
-
-
-
-
-
-  // priceSort = () => {
-  //   this.setState(({tickets}) => {
-  //     const newArray = tickets.slice();
-  //     const sortedArr = newArray.sort((a,b) => a.price-b.price);
-  //     return {
-  //       tickets: sortedArr,
-  //       cheapSort: 'activeSort',
-  //       fastSort: '',
-  //     }
-  //   });
-  // };
-
-  // speedSort = () => {
-  //   this.setState(({tickets}) => {
-  //     const newArray = tickets.slice();
-  //     const sortedArr = newArray.sort((a,b) => a.segments[0].duration-b.segments[0].duration);
-  //     return {
-  //       tickets: sortedArr,
-  //       cheapSort: '',
-  //       fastSort: 'activeSort',
-  //     }
-  //   })
-  // }
